@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './App.css'
 
 export default function App() {
-  // Preloaded with one example thought
+  // Example initial thought for demonstration purposes
   const [thoughts, setThoughts] = useState([
     {
       id: 1,
