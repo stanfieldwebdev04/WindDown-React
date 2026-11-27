@@ -1,0 +1,38 @@
+services:
+    db: # PostgreSQL container (framwork only)
+        image: postgres:17-alpine
+        container_name: winddown_db
+        entrypoint: ["tail", "-f", "/dev/null"]
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+        networks:
+            - winddown-net
+
+    backend: # Node.js container (framwork only)
+        build: ./backend
+        container_name: winddown-backend
+        ports: 
+            - "5000:5000"
+        volumes:
+            - ./backend:/app
+        networks: 
+            - winddown-net
+
+    frontend: # Active frontend container with React + Vite dev server
+        build: ./frontend
+        container_name: winddown-frontend
+        ports:
+            - "5173:5173"
+        volumes:
+            - ./frontend:/app
+            - /app/node_modules # Prevents host folder from overwriting container modules
+        networks: 
+            - winddown-net
+
+networks: 
+    winddown-net:
+        driver: bridge
+
+volumes:
+    pgdata:
+
